@@ -1,49 +1,45 @@
+
 import 'package:flutter/material.dart';
 
 class Task {
-  Icon leadingIcon;
-  String taskName;
-  String description;
-  bool isNotifiable;
+  Icon _leadingIcon;
+  String _taskName;
+  String _description;
+  bool _isNotifiable;
 
-  Task({
-    this.description,
-    this.isNotifiable,
-    this.leadingIcon,
-    this.taskName
-  });
+  Task(
+    this._taskName,
+    this._leadingIcon,
+    this._isNotifiable,
+    this._description,
+  );
+
+  //setters
+  set leadingIcon(Icon icon){
+    this._leadingIcon = icon;
+  }
+
+  set description(String desc){
+    this._description = desc;
+  }
+
+  set taskName(String name){
+    this._taskName = name;
+  }
+
+  set isNotifiable(bool isIt){
+    this._isNotifiable = isIt;
+  }
+
+
+  //getters
+  String get taskName=>this._taskName;
+
+  String get description => this._description;
+
+  Icon get leadingIcon =>this._leadingIcon;
+
+  bool get isNotifiable =>this._isNotifiable;
+
 }
-
-  List<Task> sampleTask = [
-    Task(
-      taskName: "Coding",
-      leadingIcon: Icon(Icons.code,color: Colors.purple,),
-      isNotifiable: true,
-      description: "Coding is my only life"
-    ),
-    Task(
-        taskName: "Market",
-        leadingIcon: Icon(Icons.shop,color: Colors.purple),
-        isNotifiable: true,
-        description: "purchase vegetable from market (Home-Work)"
-    ),
-    Task(
-        taskName: "Gaming",
-        leadingIcon: Icon(Icons.games,color: Colors.purple),
-        isNotifiable: false,
-        description: "pubg match "
-    ),
-    Task(
-        taskName: "study",
-        leadingIcon: Icon(Icons.school,color: Colors.purple),
-        isNotifiable: true,
-        description: "college is still on fire"
-    ),
-    Task(
-        taskName: "Movie",
-        leadingIcon: Icon(Icons.movie,color: Colors.purple,),
-        isNotifiable: false,
-        description: "Entertainment is important"
-    ),
-  ];
 
