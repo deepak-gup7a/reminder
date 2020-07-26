@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:reminder/bloc/task_bloc.dart';
+import 'package:reminder/widgets/icon_picker.dart';
 import 'package:reminder/model/task.dart';
 
 class AddNewTask extends StatefulWidget {
@@ -13,19 +13,16 @@ class _AddNewTaskState extends State<AddNewTask> {
   TextEditingController _taskNameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   bool isNotifiable = true;
+  IconData icon = Icons.title;
   bool raiseError = true;
 
   _addTask(Task task){
     Navigator.of(context).pop(task);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   _addNewTask(){
-    Task task = new Task("",Icon(Icons.add),true,"");
+    Task task = new Task("",Icon(Icons.title),true,"");
     if(_taskNameController.text.isEmpty){
       setState(() {
         raiseError = false;
@@ -39,10 +36,25 @@ class _AddNewTaskState extends State<AddNewTask> {
       else
         task.description = _descriptionController.text;
       task.isNotifiable = isNotifiable;
-      task.leadingIcon = Icon(Icons.add);
+      task.leadingIcon = Icon(icon);
       _addTask(task);
     }
+  }
 
+  Future<void>_showIconPickerDialog(BuildContext context)async{
+    IconData pickedIcon = await showDialog(
+      context: context,
+      builder: (context)=>AlertDialog(
+        title: Text("Pick an Icon"),
+        content: IconPicker(),
+      )
+    );
+    if(pickedIcon !=null)
+      {
+          setState(() {
+            icon = pickedIcon;
+          });
+      }
   }
 
 
@@ -62,8 +74,11 @@ class _AddNewTaskState extends State<AddNewTask> {
                     Text("New Task"),
                     IconButton(
                       tooltip: "Icon",
-                      icon: Icon(Icons.add_circle),
-                      onPressed: (){},
+                      icon: Icon(icon),
+                      onPressed: (){
+                        // ignore: unnecessary_statements
+                        _showIconPickerDialog(context);
+                      },
                     ),
                   ],
                 ),
