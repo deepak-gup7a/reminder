@@ -24,6 +24,25 @@ class _HomePageState extends State<HomePage> {
     taskBloc.taskAddSink.add(task);
   }
 
+  Future<bool>_showAskDialog(BuildContext context)async{
+    return showDialog(
+      context: context,
+      builder: (context)=>AlertDialog(
+        title: Text("Are you sure ?? "),
+        actions: <Widget>[
+          RaisedButton(
+            child: Text("yes"),
+            onPressed: ()=>Navigator.pop(context,true),
+          ),
+          RaisedButton(
+            child: Text("no"),
+            onPressed: ()=>Navigator.pop(context,false),
+          )
+        ],
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -52,17 +71,33 @@ class _HomePageState extends State<HomePage> {
               return Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Container(
-                  padding: EdgeInsets.all(0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0)
+                padding: EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(15.0)
+                ),
+                child: Dismissible(
+                  background: Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(Icons.delete,color: Colors.red,),
+                    ),
                   ),
-                  child: ListTile(
-                    leading: task.leadingIcon,
-                    title: Text(task.taskName),
-                    subtitle: Text(task.description),
-                    trailing: Icon(task.isNotifiable?Icons.notifications_active:Icons.notifications,),
+                  direction: DismissDirection.startToEnd,
+                  key: ValueKey(task),
+                  onDismissed: (direction)=>taskBloc.taskDeleteSink.add(task),
+                  confirmDismiss: (direction)=>_showAskDialog(context),
+                  child: Container(
+                    child: ListTile(
+                      leading: task.leadingIcon,
+                      title: Text(task.taskName),
+                      subtitle: Text(task.description),
+                      trailing: Icon(task.isNotifiable?Icons.notifications_active:Icons.notifications,),
+                    ),
                   ),
                 ),
+                  ),
               );
             }
         ),
