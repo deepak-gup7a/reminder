@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:reminder/model/icons_list.dart';
 
 class Task {
-  Icon _leadingIcon;
+  IconData _leadingIcon;
   String _taskName;
   String _description;
   bool _isNotifiable;
@@ -14,9 +15,18 @@ class Task {
     this._description,
   );
 
+  Map<String ,dynamic>toMap(){
+    return{
+      'taskName':_taskName,
+      'leadingIcon':iconList.indexOf(_leadingIcon),
+      'isNotifiable':_isNotifiable.toString(),
+      'description':_description
+    };
+  }
+
   //setters
-  set leadingIcon(Icon icon){
-    this._leadingIcon = icon;
+  set leadingIcon(IconData iconData){
+    this._leadingIcon = iconData;
   }
 
   set description(String desc){
@@ -37,7 +47,7 @@ class Task {
 
   String get description => this._description;
 
-  Icon get leadingIcon =>this._leadingIcon;
+  IconData get leadingIcon =>this._leadingIcon;
 
   bool get isNotifiable =>this._isNotifiable;
 

@@ -22,7 +22,7 @@ class _AddNewTaskState extends State<AddNewTask> {
 
 
   _addNewTask(){
-    Task task = new Task("",Icon(Icons.title),true,"");
+    Task task = new Task("",Icons.title,true,"");
     if(_taskNameController.text.isEmpty){
       setState(() {
         raiseError = false;
@@ -36,7 +36,7 @@ class _AddNewTaskState extends State<AddNewTask> {
       else
         task.description = _descriptionController.text;
       task.isNotifiable = isNotifiable;
-      task.leadingIcon = Icon(icon);
+      task.leadingIcon = icon;
       _addTask(task);
     }
   }

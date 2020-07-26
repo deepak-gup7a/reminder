@@ -1,41 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:reminder/database/data.dart';
 import 'package:reminder/model/task.dart';
 
 class TaskBloc{
 
-  List<Task> _sampleTask = [
-    Task(
-         "Coding",
-         Icon(Icons.code,color: Colors.purple,),
-         true,
-         "Coding is my only life"
-    ),
-    Task(
-         "Market",
-         Icon(Icons.shop,color: Colors.purple),
-         true,
-         "purchase vegetable from market (Home-Work)"
-    ),
-    Task(
-         "Gaming",
-         Icon(Icons.games,color: Colors.purple),
-         false,
-         "pubg match "
-    ),
-    Task(
-         "study",
-         Icon(Icons.school,color: Colors.purple),
-         true,
-         "college is still on fire"
-    ),
-    Task(
-         "Movie",
-         Icon(Icons.movie,color: Colors.purple,),
-         false,
-         "Entertainment is important"
-    ),
-  ];
+  Data data = Data();
+
+  List<Task>_sampleTask = [];
+
+   int get len=>_sampleTask.length;
 
   final _taskListController = StreamController<List<Task>>();
   final _taskAddController = StreamController<Task>();
@@ -47,6 +21,17 @@ class TaskBloc{
   StreamSink<Task> get taskAddSink => _taskAddController.sink;
   StreamSink<Task> get taskDeleteSink => _taskDeleteController.sink;
 
+  intializeData()async{
+    _sampleTask = await data.fetchData();
+    taskListSink.add(_sampleTask);
+//    Task task1 = Task("yo",Icons.add,true,"fr");
+//    Task task2 = Task("vo",Icons.add,true,"fr");
+//   await data.deleteTask(task1);
+//    await data.deleteTask(task2);
+    for(var k in _sampleTask)
+      print(k.taskName);
+  }
+
   TaskBloc(){
     _taskListController.add(_sampleTask);
     _taskAddController.stream.listen(_addNewTask);
@@ -55,14 +40,22 @@ class TaskBloc{
 
   _addNewTask(Task task){
     _sampleTask.add(task);
-    for(var sam in _sampleTask)
-      print(sam.taskName);
     taskListSink.add(_sampleTask);
+    _addToDataBase(task);
   }
 
   _deleteGivenTask(Task task){
     _sampleTask.remove(task);
     taskListSink.add(_sampleTask);
+    _deleteFromDataBase(task);
+  }
+
+  _addToDataBase(Task task)async{
+    await data.insertTask(task);
+  }
+
+  _deleteFromDataBase(Task task)async{
+    await data.deleteTask(task);
   }
 
   void dispose(){
@@ -70,5 +63,7 @@ class TaskBloc{
     _taskAddController.close();
     _taskDeleteController.close();
   }
+
+
 
 }

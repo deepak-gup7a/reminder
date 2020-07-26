@@ -13,6 +13,12 @@ class _HomePageState extends State<HomePage> {
 
     final TaskBloc taskBloc = TaskBloc() ;
 
+    @override
+  void initState() {
+      super.initState();
+      taskBloc.intializeData();
+  }
+
   @override
   void dispose() {
     taskBloc.dispose();
@@ -62,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
 
-      body: StreamBuilder(
+      body: taskBloc.len!=null?StreamBuilder(
         stream: taskBloc.taskListStream,
         builder:(context,snapshot)=> ListView.builder(
             itemCount: snapshot.data.length,
@@ -90,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                   confirmDismiss: (direction)=>_showAskDialog(context),
                   child: Container(
                     child: ListTile(
-                      leading: task.leadingIcon,
+                      leading: Icon(task.leadingIcon),
                       title: Text(task.taskName),
                       subtitle: Text(task.description),
                       trailing: Icon(task.isNotifiable?Icons.notifications_active:Icons.notifications,),
@@ -101,7 +107,7 @@ class _HomePageState extends State<HomePage> {
               );
             }
         ),
-      ),
+      ):Center(child: Container(color: Colors.red,),),
     );
   }
 }
