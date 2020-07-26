@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
 //        primarySwatch: Colors.purple,
 //      ),
       title: "Remind me",
-      home: HomePage(),
+      home:HomePage(),
     );
   }
 }
