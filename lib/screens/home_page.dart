@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:reminder/bloc/task_bloc.dart';
 import 'package:reminder/model/task.dart';
 import 'package:reminder/screens/new_task.dart';
-import 'package:reminder/widgets/appbar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -53,10 +52,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60.0),
-          child: HomeAppBar()
-      ),
 
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
