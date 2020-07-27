@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
           Task task = await Navigator.of(context).push(MaterialPageRoute(
               builder: (context)=>AddNewTask())
           );
+          if(task!=null)
           _addTask(task);
         },
       ),
@@ -79,7 +80,6 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                 padding: EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(15.0)
                 ),
                 child: Dismissible(

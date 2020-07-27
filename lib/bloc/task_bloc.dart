@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:reminder/database/data.dart';
 import 'package:reminder/model/task.dart';
 
@@ -24,10 +23,6 @@ class TaskBloc{
   intializeData()async{
     _sampleTask = await data.fetchData();
     taskListSink.add(_sampleTask);
-//    Task task1 = Task("yo",Icons.add,true,"fr");
-//    Task task2 = Task("vo",Icons.add,true,"fr");
-//   await data.deleteTask(task1);
-//    await data.deleteTask(task2);
     for(var k in _sampleTask)
       print(k.taskName);
   }

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/screens/home_page.dart';
+import 'package:reminder/theme.dart';
 
 void main()=>runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.dark(),
-//      theme: ThemeData(
-//        primarySwatch: Colors.purple,
-//      ),
-      title: "Remind me",
-      home:HomePage(),
+    Themes theme = Themes();
+    return StreamBuilder(
+      stream: ,
+      builder:(context,snapshot)=> MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme.darkTheme,
+        home: HomePage(),
+      ),
     );
   }
 }
+

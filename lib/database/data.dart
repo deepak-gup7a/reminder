@@ -31,8 +31,6 @@ class Data{
     final List<Map<String,dynamic>>maps = await db.query('Task');
     print("fetch data intial");
     print(maps.length);
-    for(var map in maps)
-      print(map['leadingIcon']);
     return await List.generate(
         maps.length,
             (index) => Task(

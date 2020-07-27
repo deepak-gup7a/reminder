@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:reminder/bloc/task_bloc.dart';
 import 'package:reminder/widgets/icon_picker.dart';
 import 'package:reminder/model/task.dart';
 
@@ -14,7 +15,8 @@ class _AddNewTaskState extends State<AddNewTask> {
   TextEditingController _descriptionController = TextEditingController();
   bool isNotifiable = true;
   IconData icon = Icons.title;
-  bool raiseError = true;
+  bool raiseError = false;
+  final TaskBloc tb = TaskBloc();
 
   _addTask(Task task){
     Navigator.of(context).pop(task);
@@ -25,10 +27,12 @@ class _AddNewTaskState extends State<AddNewTask> {
     Task task = new Task("",Icons.title,true,"");
     if(_taskNameController.text.isEmpty){
       setState(() {
-        raiseError = false;
+        raiseError = true;
       });
+      print("cc");
     }
     else{
+      print("called");
       task.taskName = _taskNameController.text;
       if(_descriptionController.text.isEmpty){
         task.description = "highly important";
@@ -61,94 +65,96 @@ class _AddNewTaskState extends State<AddNewTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:<Widget> [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("New Task"),
-                    IconButton(
-                      tooltip: "Icon",
-                      icon: Icon(icon),
-                      onPressed: (){
-                        // ignore: unnecessary_statements
-                        _showIconPickerDialog(context);
-                      },
-                    ),
-                  ],
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: TextField(
-                        onChanged: (value){
-                          setState(() {
-                            if(value.isEmpty)
-                              raiseError = true;
-                            else
-                              raiseError = false;
-                          });
-                        },
-                        controller: _taskNameController,
-                        keyboardType:TextInputType.text,
-                          decoration: InputDecoration(
-                            errorText: raiseError?"required":null,
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
-                            hintText: "New Task",
-                            labelText: "task",
-                          ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: _descriptionController,
-                    keyboardType:TextInputType.text,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
-                        hintText: "Add Description",
-                        labelText: "Description",
-                      ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Row(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:<Widget> [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        child: Text("Reminder "),
+                    children: [
+                      Text("New Task"),
+                      IconButton(
+                        tooltip: "Icon",
+                        icon: Icon(icon),
+                        onPressed: (){
+                          // ignore: unnecessary_statements
+                          _showIconPickerDialog(context);
+                        },
                       ),
-                      Container(
-                        child: Switch(
-                          value: isNotifiable,
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TextField(
                           onChanged: (value){
                             setState(() {
-                              isNotifiable = value;
+                              if(value.isEmpty)
+                                raiseError = true;
+                              else
+                                raiseError = false;
                             });
                           },
+                          controller: _taskNameController,
+                          keyboardType:TextInputType.text,
+                            decoration: InputDecoration(
+                              errorText: raiseError?"required":null,
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
+                              hintText: "New Task",
+                              labelText: "task",
+                            ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  child: RaisedButton(
-                    child: Text("Add"),
-                    onPressed: _addNewTask,
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: TextField(
+                      controller: _descriptionController,
+                      keyboardType:TextInputType.text,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
+                          hintText: "Add Description",
+                          labelText: "Description",
+                        ),
+                    ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: Text("Reminder "),
+                        ),
+                        Container(
+                          child: Switch(
+                            value: isNotifiable,
+                            onChanged: (value){
+                              setState(() {
+                                isNotifiable = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: RaisedButton(
+                      child: Text("Add"),
+                      onPressed: _addNewTask,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
