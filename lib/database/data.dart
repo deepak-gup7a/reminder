@@ -7,37 +7,37 @@ import 'package:sqflite/sqflite.dart';
 class Data{
 
    Future<Database>database ()async =>openDatabase(
-      join(await getDatabasesPath(),'task_database.db'),
-      version: 3,
+      join(await getDatabasesPath(),'Task_Database.db'),
+      version: 1,
       onCreate: (db,version)=>db.execute(
-      "CREATE Table task(taskName TEXT,leadingIcon INTEGER,isNotifiable TEXT, description TEXT)"
+      "CREATE Table TASK(taskName TEXT,leadingIcon INTEGER, description TEXT,taskDate TEXT,taskTime TEXT)"
       )
   );
 
   Future<void>insertTask (Task task)async{
     final Database db = await database();
-    print("insert is call");
-    await db.insert('Task',task.toMap(),conflictAlgorithm: ConflictAlgorithm.replace );
+    print("insert is call"+db.path);
+    await db.insert('TASK',task.toMap(),conflictAlgorithm: ConflictAlgorithm.replace );
   }
 
   Future<void>deleteTask(Task task)async{
     final Database db = await database();
     print("delete is call");
-    await db.delete('Task',where: "taskName = ?",whereArgs: [task.taskName]);
+    await db.delete('TASK',where: "taskName = ?",whereArgs: [task.taskName]);
   }
 
   Future<List<Task>>fetchData()async{
     final Database db =await database();
     final List<Map<String,dynamic>>maps = await db.query('Task');
-    print("fetch data intial");
-    print(maps.length);
+    print(maps[1]['taskTime'].toString().split(":")[1].split(")")[0]);
     return await List.generate(
         maps.length,
             (index) => Task(
               maps[index]['taskName'],
-                maps[index]['leadingIcon']!=-1?iconList[maps[index]['leadingIcon']]:Icons.add,
-              maps[index]['isNotifiable']=="true"?true:false,
-              maps[index]['description']
+              iconList[maps[index]['leadingIcon']],
+              maps[index]['description'],
+              DateTime.parse(maps[index]['taskDate']),
+              TimeOfDay(hour: int.parse(((maps[index]['taskTime'].toString()).split(":"))[0].split("(")[1]),minute: int.parse(((maps[index]['taskTime'].toString()).split(":"))[1].split(")")[0]))
             )
     );
   }

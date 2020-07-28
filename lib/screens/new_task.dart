@@ -11,20 +11,25 @@ class AddNewTask extends StatefulWidget {
 
 class _AddNewTaskState extends State<AddNewTask> {
 
+  List<String> months = [
+    "january","february","march","april","may","june","july","august","september","october","november","december"
+  ];
+
+
   TextEditingController _taskNameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  bool isNotifiable = true;
   IconData icon = Icons.title;
   bool raiseError = false;
+  DateTime pickedDate;
+  TimeOfDay pickedTime;
   final TaskBloc tb = TaskBloc();
 
   _addTask(Task task){
     Navigator.of(context).pop(task);
   }
 
-
   _addNewTask(){
-    Task task = new Task("",Icons.title,true,"");
+    Task task = new Task("",Icons.title,"",DateTime.now(),TimeOfDay.now());
     if(_taskNameController.text.isEmpty){
       setState(() {
         raiseError = true;
@@ -39,10 +44,36 @@ class _AddNewTaskState extends State<AddNewTask> {
       }
       else
         task.description = _descriptionController.text;
-      task.isNotifiable = isNotifiable;
       task.leadingIcon = icon;
+      task.taskDate = pickedDate;
+      task.taskTime = pickedTime;
       _addTask(task);
     }
+  }
+
+  _pickDate()async{
+    DateTime date = await showDatePicker(
+        context: context,
+        initialDate: pickedDate,
+        firstDate: DateTime(DateTime.now().year-5),
+        lastDate: DateTime(DateTime.now().year+5)
+    );
+    if(date!=null)
+      {
+          setState(() {
+              pickedDate = date;
+          });
+      }
+  }
+
+  _pickTime()async{
+    TimeOfDay time = await showTimePicker(context: context, initialTime: pickedTime);
+    if(time!=null)
+      {
+          setState(() {
+              pickedTime = time;
+          });
+      }
   }
 
   Future<void>_showIconPickerDialog(BuildContext context)async{
@@ -59,6 +90,13 @@ class _AddNewTaskState extends State<AddNewTask> {
             icon = pickedIcon;
           });
       }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    pickedDate = DateTime.now();
+    pickedTime = TimeOfDay.now();
   }
 
 
@@ -126,29 +164,23 @@ class _AddNewTaskState extends State<AddNewTask> {
                         ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          child: Text("Reminder "),
-                        ),
-                        Container(
-                          child: Switch(
-                            value: isNotifiable,
-                            onChanged: (value){
-                              setState(() {
-                                isNotifiable = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                  ListTile(
+                    dense: false,
+                    title: Text("Date: ${pickedDate.day} "+months[pickedDate.month-1].toString() + " ${pickedDate.year}  "),
+                    trailing: Icon(Icons.keyboard_arrow_down),
+                    onTap: _pickDate,
+                  ),
+                  ListTile(
+                    dense: false,
+                    title: Text("Time:  ${pickedTime.hour}"+" : "+"${pickedTime.minute}"),
+                    trailing: Icon(Icons.keyboard_arrow_down),
+                    onTap: _pickTime,
                   ),
                   Container(
                     child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                       child: Text("Add"),
                       onPressed: _addNewTask,
                     ),

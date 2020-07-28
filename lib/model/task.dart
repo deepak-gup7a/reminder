@@ -6,21 +6,24 @@ class Task {
   IconData _leadingIcon;
   String _taskName;
   String _description;
-  bool _isNotifiable;
+  DateTime _taskDate;
+  TimeOfDay _taskTime;
 
   Task(
     this._taskName,
     this._leadingIcon,
-    this._isNotifiable,
     this._description,
+    this._taskDate,
+    this._taskTime
   );
 
   Map<String ,dynamic>toMap(){
     return{
       'taskName':_taskName,
       'leadingIcon':iconList.indexOf(_leadingIcon),
-      'isNotifiable':_isNotifiable.toString(),
-      'description':_description
+      'description':_description,
+      'taskDate' : _taskDate.toString(),
+      'taskTime' : _taskTime.toString()
     };
   }
 
@@ -37,19 +40,25 @@ class Task {
     this._taskName = name;
   }
 
-  set isNotifiable(bool isIt){
-    this._isNotifiable = isIt;
+  set taskDate(DateTime date){
+    this._taskDate = date;
+  }
+
+  set taskTime(TimeOfDay time){
+    this._taskTime = time;
   }
 
 
   //getters
-  String get taskName=>this._taskName;
+  String get taskName => this._taskName;
 
   String get description => this._description;
 
-  IconData get leadingIcon =>this._leadingIcon;
+  IconData get leadingIcon => this._leadingIcon;
 
-  bool get isNotifiable =>this._isNotifiable;
+  DateTime get taskDate => this._taskDate;
+
+  TimeOfDay get taskTime => this._taskTime;
 
 }
 

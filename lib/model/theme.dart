@@ -4,21 +4,23 @@ class Themes{
   List<ThemeData>_themes = [
     ThemeData(
       primarySwatch: Colors.grey,
-      primaryColor: Colors.white,
+      primaryColor: Colors.blueGrey,
       brightness: Brightness.light,
-      backgroundColor: const Color(0xFFE5E5E5),
-      accentColor: Colors.black,
-      accentIconTheme: IconThemeData(color: Colors.white),
-      dividerColor: Colors.white54,
+      backgroundColor: Colors.blueGrey,
+      accentColor: Colors.blueGrey,
+      accentIconTheme: IconThemeData(color: Colors.cyan),
+      dividerColor: Colors.blueGrey,
+      iconTheme: IconThemeData(color: Colors.cyanAccent)
     ),
     ThemeData(
       primarySwatch: Colors.grey,
-      primaryColor: Colors.black,
+      primaryColor: Colors.blueGrey,
       brightness: Brightness.dark,
       backgroundColor: const Color(0xFF212121),
-      accentColor: Colors.white,
+      accentColor: Colors.pinkAccent,
       accentIconTheme: IconThemeData(color: Colors.black),
-      dividerColor: Colors.black12,
+      dividerColor: Colors.pinkAccent,
+      iconTheme: IconThemeData(color: Colors.pinkAccent)
     ),
   ];
 

@@ -33,14 +33,29 @@ class _HomePageState extends State<HomePage> {
     return showDialog(
       context: context,
       builder: (context)=>AlertDialog(
+        contentPadding: EdgeInsets.all(0.0),
+        buttonPadding: EdgeInsets.all(10.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0)
+          ),
         title: Text("Are you sure ?? "),
         actions: <Widget>[
           RaisedButton(
-            child: Text("yes"),
+            splashColor: Colors.green,
+            color: Colors.brown,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            child: Text("Yes",style: TextStyle(fontWeight: FontWeight.bold),),
             onPressed: ()=>Navigator.pop(context,true),
           ),
           RaisedButton(
-            child: Text("no"),
+            splashColor: Colors.red,
+            color: Colors.brown,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+            ),
+            child: Text("No",style: TextStyle(fontWeight: FontWeight.bold),),
             onPressed: ()=>Navigator.pop(context,false),
           )
         ],
@@ -52,7 +67,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: ()async{
@@ -64,41 +78,61 @@ class _HomePageState extends State<HomePage> {
         },
       ),
 
-      body: taskBloc.len!=null?StreamBuilder(
+      body: taskBloc.len!=null?StreamBuilder<List<Task>>(
         stream: taskBloc.taskListStream,
-        builder:(context,snapshot)=> ListView.builder(
+        builder:(BuildContext context,AsyncSnapshot<List<Task>>snapshot)=> ListView.builder(
             itemCount: snapshot.data.length,
-            itemBuilder: (context,index){
+            itemBuilder: (BuildContext context,int index){
               Task task = snapshot.data[index];
-              return Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Container(
-                padding: EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0)
-                ),
-                child: Dismissible(
-                  background: Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Align(
+              return Column(
+                children: <Widget>[
+                  Container(
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0)
+                  ),
+                  child: Dismissible(
+                    background: Align(
                       alignment: Alignment.centerLeft,
-                      child: Icon(Icons.delete,color: Colors.red,),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 15.0,right: 15.0),
+                              child: Icon(Icons.delete,color: Colors.red[500],)
+                          ),
+                          Text("swipe for delete",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),)
+                        ],
+                      ),
+                    ),
+                    direction: DismissDirection.startToEnd,
+                    key: ValueKey(task),
+                    onDismissed: (direction)=>taskBloc.taskDeleteSink.add(task),
+                    confirmDismiss: (direction)=>_showAskDialog(context),
+                    child: Container(
+                      child: ListTile(
+                        leading: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(task.leadingIcon,size: 35.0,),
+                            SizedBox(width: 5.0,),
+                            Text("|",style: TextStyle(fontSize: 45.0,))
+                          ],
+                        ),
+                        title: Text(task.taskName),
+                        subtitle: Text(task.description),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Text(task.taskDate.toString().split(" ")[0]),
+                            Text(task.taskTime.toString().split("(")[1].split(")")[0])
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  direction: DismissDirection.startToEnd,
-                  key: ValueKey(task),
-                  onDismissed: (direction)=>taskBloc.taskDeleteSink.add(task),
-                  confirmDismiss: (direction)=>_showAskDialog(context),
-                  child: Container(
-                    child: ListTile(
-                      leading: Icon(task.leadingIcon),
-                      title: Text(task.taskName),
-                      subtitle: Text(task.description),
-                      trailing: Icon(task.isNotifiable?Icons.notifications_active:Icons.notifications,),
                     ),
-                  ),
-                ),
-                  ),
+                  //Divider(thickness: 2.0,indent: 10.0,endIndent: 10.0,height: 0.0,)
+                ],
               );
             }
         ),

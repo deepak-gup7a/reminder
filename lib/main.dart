@@ -14,23 +14,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isSwitch = false;
-  Themes theme = Themes();
+   var theme = new Themes();
 
   getInitialTheme()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isSwitch = prefs.getBool('ISDARK');
+    if(prefs.getBool('ISDARK')!=null)
+    setState(() {
+      isSwitch = prefs.getBool('ISDARK');
+    });
   }
 
   setTheme()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getKeys());
     prefs.setBool('ISDARK', isSwitch);
   }
 
-  @override
-  void dispose() {
-    setTheme();
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -41,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner:  false,
+      debugShowCheckedModeBanner:false,
       theme: isSwitch?theme.getTheme[1]:theme.getTheme[0],
       home: Scaffold(
         appBar: AppBar(
@@ -52,6 +51,7 @@ class _MyAppState extends State<MyApp> {
               onChanged: (value){
                 setState(() {
                   isSwitch = value;
+                  setTheme();
                 });
               },
             )
