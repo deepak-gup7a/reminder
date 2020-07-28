@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.only(left: 15.0,right: 15.0),
                               child: Icon(Icons.delete,color: Colors.red[500],)
                           ),
-                          Text("swipe for delete",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),)
+                          Text("swipe to delete",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),)
                         ],
                       ),
                     ),
@@ -120,12 +120,15 @@ class _HomePageState extends State<HomePage> {
                         ),
                         title: Text(task.taskName),
                         subtitle: Text(task.description),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Text(task.taskDate.toString().split(" ")[0]),
-                            Text(task.taskTime.toString().split("(")[1].split(")")[0])
-                          ],
+                        trailing: Container(
+                          color: Colors.blue,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(task.taskDate.toString().split(" ")[0]),
+                              Text(task.taskTime.toString().split("(")[1].split(")")[0])
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -136,7 +139,8 @@ class _HomePageState extends State<HomePage> {
               );
             }
         ),
-      ):Center(child: Container(color: Colors.red,),),
+      ):Center(child: Container(width:15.0,height:15,color: Colors.red,),),
     );
   }
 }
+

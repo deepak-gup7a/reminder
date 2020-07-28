@@ -29,7 +29,6 @@ class Data{
   Future<List<Task>>fetchData()async{
     final Database db =await database();
     final List<Map<String,dynamic>>maps = await db.query('Task');
-    print(maps[1]['taskTime'].toString().split(":")[1].split(")")[0]);
     return await List.generate(
         maps.length,
             (index) => Task(
