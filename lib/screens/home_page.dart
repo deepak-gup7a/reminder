@@ -121,12 +121,19 @@ class _HomePageState extends State<HomePage> {
                         title: Text(task.taskName),
                         subtitle: Text(task.description),
                         trailing: Container(
-                          color: Colors.blue,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: EdgeInsets.only(left: 15,right: 15,top: 3.0,bottom: 3.0),
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            alignment: WrapAlignment.end,
+                            direction: Axis.vertical,
                             children: <Widget>[
-                              Text(task.taskDate.toString().split(" ")[0]),
-                              Text(task.taskTime.toString().split("(")[1].split(")")[0])
+                              Text(task.taskDate.toString().split(" ")[0],style: TextStyle(color: Colors.white),),
+                              SizedBox(height: 3.0,),
+                              Text(task.taskTime.toString().split("(")[1].split(")")[0],style: TextStyle(color: Colors.white))
                             ],
                           ),
                         ),

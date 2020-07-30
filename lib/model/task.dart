@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:reminder/model/icons_list.dart';
 
+
 class Task {
+  int _id;
   IconData _leadingIcon;
   String _taskName;
   String _description;

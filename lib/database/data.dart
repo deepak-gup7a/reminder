@@ -23,7 +23,7 @@ class Data{
   Future<void>deleteTask(Task task)async{
     final Database db = await database();
     print("delete is call");
-    await db.delete('TASK',where: "taskName = ?",whereArgs: [task.taskName]);
+    await db.delete('TASK',where: "taskName = ? AND description = ?",whereArgs: [task.taskName,task.description]);
   }
 
   Future<List<Task>>fetchData()async{
